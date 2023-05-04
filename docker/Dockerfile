@@ -22,3 +22,9 @@ RUN \
   elif [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
+
+FROM node:16-alpine AS builder
+WORKDIR /app
+COPY --from=deps /bin/pnpm /bin/pnpm
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
